@@ -2,7 +2,67 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  // runApp(MyApp());
+  runApp(MaterialApp(
+    title: "Page Switch",
+    home: First(),
+  ));
+}
+
+// 화면 이동 연습
+class First extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: new Text("First Page"),
+      ),
+      body: Center(
+        child: RaisedButton(
+          child: new Text("Go To Second",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+          color: Colors.amber[900],
+          onPressed: () {
+            // push에 전달되는 두번째 매개변수는 Route<T> Class
+            Navigator.push(context,
+                MaterialPageRoute<void>(builder: (BuildContext context) {
+              return Second();
+            }));
+
+            /**
+            // 화살표 문법 적용
+            Navigator.push(context, MaterialPageRoute<void>(builder: (BuildContext context) => Second()));
+            // of 메소드 호출이 불편
+            Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => Second()));
+            **/
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class Second extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: new Text("Second Page"),
+      ),
+      body: Center(
+        child: RaisedButton(
+          child: new Text("Back To First",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+              color: Colors.amber[200],
+              onPressed: () {
+                // push에 전달되는 두번째 매개변수는 Route<T> Class
+                Navigator.pop(context);
+                // Navigator.of(context).pop();
+          },
+        ),
+      ),
+    );
+  }
 }
 
 // Custom 위젯 만들기
@@ -99,7 +159,7 @@ class _MyApp extends State<MyApp> {
 
     void _toggleFavorite() {
       setState(() {
-        if (_isSelected){
+        if (_isSelected) {
           _count -= 1;
           _isSelected = false;
         } else {
@@ -129,25 +189,26 @@ class _MyApp extends State<MyApp> {
                 children: [
                   Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: new Text(
-                              'Hello :)',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          new Text(
-                            // 'My name is Sun Ah!',
-                            'My name is Sun Ah!',
-                            style: TextStyle(color: Colors.grey),
-                          )
-                        ],
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: new Text(
+                          'Hello :)',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      new Text(
+                        // 'My name is Sun Ah!',
+                        'My name is Sun Ah!',
+                        style: TextStyle(color: Colors.grey),
                       )
-                  ),
+                    ],
+                  )),
                   new IconButton(
-                    icon: _isSelected?Icon(Icons.favorite):Icon(Icons.favorite_border),
+                    icon: _isSelected
+                        ? Icon(Icons.favorite)
+                        : Icon(Icons.favorite_border),
                     // _isSelected?Icons.favorite_rounded:Icons.favorite_border,
                     color: Colors.pink,
                     onPressed: _toggleFavorite,
