@@ -6,36 +6,45 @@ void main() {
 }
 
 // Custom 위젯 만들기
-Widget titleSection = new Container(
-  padding: const EdgeInsets.all(32),
-  decoration: new BoxDecoration(color: Colors.amber),
-  child: Row(
-    children: [
-      Expanded(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: new Text(
-              'Hello :)',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          new Text(
-            'My name is Sun Ah!',
-            style: TextStyle(color: Colors.grey),
-          )
-        ],
-      )),
-      new Icon(
-        Icons.favorite_rounded,
-        color: Colors.pink,
-      ),
-      new Text('50')
-    ],
-  ),
-);
+// Widget titleSection = new Container(
+//   padding: const EdgeInsets.all(32),
+//   decoration: new BoxDecoration(color: Colors.amber[50]),
+//   child: Row(
+//     children: [
+//       Expanded(
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Container(
+//                 padding: const EdgeInsets.only(bottom: 8),
+//                 child: new Text(
+//                   'Hello :)',
+//                   style: TextStyle(fontWeight: FontWeight.bold),
+//                 ),
+//               ),
+//               new Text(
+//                 // 'My name is Sun Ah!',
+//                 'My name is Sun Ah!',
+//                 style: TextStyle(color: Colors.grey),
+//               )
+//             ],
+//           )
+//       ),
+//       new Icon(
+//         Icons.favorite_rounded,
+//         color: Colors.pink,
+//       ),
+//       Padding(padding: EdgeInsets.all(2)),
+//       new Text(
+//         '$_count',
+//         style: TextStyle(
+//           fontSize: 20,
+//           fontWeight: FontWeight.bold,
+//         ),
+//       )
+//     ],
+//   ),
+// );
 Widget textSection = new Container(
   padding: const EdgeInsets.all(32),
   child: new Text(
@@ -49,24 +58,17 @@ Widget textSection = new Container(
   ),
 );
 
-
-int _count = 0;
-
-class LikeCount extends StatefulWidget{
+class MyApp extends StatefulWidget {
   @override
-  _LikeCount createState() => _LikeCount();
+  _MyApp createState() => _MyApp();
 }
 
-class _LikeCount extends State<LikeCount>{
-
-  @override
-  Widget build(BuildContext context) {
-    return new Text('$_count');
-  }
-}
-
-class MyApp extends StatelessWidget {
+class _MyApp extends State<MyApp> {
   // This widget is the root of your application.
+
+  // int _count = 0;
+  bool _isSelected = true;
+  int _count = 0;
 
   Column _buildButtonColumn(Color color, IconData icon, String label) {
     return Column(
@@ -92,6 +94,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color _color = Colors.pink;
+    // bool _isSelected = true;
+
+    void _toggleFavorite() {
+      setState(() {
+        if (_isSelected){
+          _count -= 1;
+          _isSelected = false;
+        } else {
+          _count += 1;
+          _isSelected = true;
+        }
+      });
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'MyApp',
@@ -103,12 +120,8 @@ class MyApp extends StatelessWidget {
         ),
         body: new ListView(
           children: [
-            Image.asset(
-              'images/ompang.jpg',
-              width: 400,
-              height: 300,
-              fit: BoxFit.cover
-            ),
+            Image.asset('images/ompang.jpg',
+                width: 400, height: 300, fit: BoxFit.cover),
             Container(
               padding: const EdgeInsets.all(32),
               decoration: new BoxDecoration(color: Colors.amber[50]),
@@ -116,31 +129,42 @@ class MyApp extends StatelessWidget {
                 children: [
                   Expanded(
                       child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: new Text(
-                          'Hello :)',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      new Text(
-                        'My name is Sun Ah!',
-                        style: TextStyle(color: Colors.grey),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: new Text(
+                              'Hello :)',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          new Text(
+                            // 'My name is Sun Ah!',
+                            'My name is Sun Ah!',
+                            style: TextStyle(color: Colors.grey),
+                          )
+                        ],
                       )
-                    ],
-                  )),
-                  new Icon(
-                    Icons.favorite_rounded,
-                    color: Colors.pink,
                   ),
-                  new Text('50')
+                  new IconButton(
+                    icon: _isSelected?Icon(Icons.favorite):Icon(Icons.favorite_border),
+                    // _isSelected?Icons.favorite_rounded:Icons.favorite_border,
+                    color: Colors.pink,
+                    onPressed: _toggleFavorite,
+                  ),
+                  Padding(padding: EdgeInsets.all(2)),
+                  new Text(
+                    '$_count',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
                 ],
               ),
             ),
             Container(
-              padding: const EdgeInsets.only(top:20),
+              padding: const EdgeInsets.only(top: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -162,7 +186,11 @@ class MyApp extends StatelessWidget {
         floatingActionButton: new FloatingActionButton(
           // child: new Icon(Icons.add_a_photo),
           child: new Icon(Icons.favorite_rounded, color: Colors.pink),
-          onPressed: () => {
+          onPressed: () {
+            setState(() {
+              _count++;
+            });
+            print('$_count');
           },
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
